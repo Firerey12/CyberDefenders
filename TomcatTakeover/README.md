@@ -2,7 +2,7 @@
 
 # Details
 
-(https://cyberdefenders.org/blueteam-ctf-challenges/tomcat-takeover/)
+https://cyberdefenders.org/blueteam-ctf-challenges/tomcat-takeover/
 
 Instructions:
 
