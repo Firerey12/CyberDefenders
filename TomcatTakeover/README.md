@@ -58,7 +58,7 @@ This gives us a bunch of packets. Now let's try narrowing it down even further. 
 Looking at the results it seems there is only one port involved in HTTP which we can safely conclude that this is the correct answer. Should there have been more ports than one which is unlikely we could have gone on to filter for the ports that involve an admin page.
 
 ### Answer
-****
+8***
 
 ## Question 4
 **Following the discovery of open ports on our server, it appears that the attacker attempted to enumerate and uncover directories and files on our web server. Which tools can you identify from the analysis that assisted the attacker in this enumeration process?**
