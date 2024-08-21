@@ -23,12 +23,13 @@ NetworkMiner
 
 The question is asking us to find the IP address that is performing a port scannin operation on our network. To find this we can go ahead and go to Statistics > Endpoints > TCP to get a better idea as to which IP address is making the most requests to different port numbers.
 
-![Endpoint](https://github.com/user-attachments/assets/da7cd5bb-1de0-4846-9e36-881d1b43619e)
+![Endpoint](https://github.com/user-attachments/assets/cf53e731-e8e8-40a3-a6e0-e9d21122f006)
 
-Looking at the results we can see that the IP 14.0.0.*** has made requests to various port numbers most of them being above the common ports range which warrants suspicious behaviour.
+
+Looking at the results we can see that the IP 1*.0.0.*** has made requests to various port numbers most of them being above the common ports range which warrants suspicious behaviour.
 
 ### Answer
-14.0.0.***
+1*.0.0.***
 
 ## Question 2
 **Based on the identified IP address associated with the attacker, can you ascertain the city from which the attacker's activities originated?**
